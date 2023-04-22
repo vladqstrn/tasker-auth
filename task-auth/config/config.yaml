@@ -1,0 +1,27 @@
+DBserver:
+  db: "postgres"
+  port: "5432"
+  name: "taskauthdb"
+  ssl: "disable"
+  host: "localhost"
+database:
+  user: "vlad"
+  password: "root"
+
+AppServer:
+  domain: "localhost"
+  port: "9090"
+
+JWT:
+  SECRET_KEY:"SECRET_KEY"
+
+Cookie:
+  name: auth
+  maxAge: 604800
+  path: /
+  domain: localhost
+  secure: true
+  httpOnly: false
+
+CORS: 
+  origins: http://localhost:8080
