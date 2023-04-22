@@ -1,16 +1,12 @@
 package usecase
 
 import (
-	"errors"
 	"time"
 
+	"github.com/vladqstrn/tasker-auth/task-auth/custom_err"
 	"github.com/vladqstrn/tasker-auth/task-auth/models"
 	"github.com/vladqstrn/tasker-auth/task-auth/tasker/repo"
 	"github.com/vladqstrn/tasker-auth/task-auth/utils"
-)
-
-var (
-	ErrUserNotFound = errors.New("user not found")
 )
 
 type Auth interface {
@@ -30,10 +26,12 @@ func NewAuthUsecase(repo *repo.UserRepository) *AuthUsecase {
 
 func (a *AuthUsecase) Register(user *models.User) error {
 	userExists, err := a.repo.GetUserByUsername(user.Username)
-	if err == ErrUserNotFound {
+
+	if err == custom_err.ErrUserNotFound {
 
 		h, err := utils.HashPassword(user.Password)
 		if err != nil {
+
 			return err
 		}
 		user.Password = h
@@ -50,7 +48,7 @@ func (a *AuthUsecase) Register(user *models.User) error {
 		}
 	}
 	if userExists != nil {
-		return errors.New("username already taken")
+		return custom_err.ExsistsUser
 	}
 
 	return nil
